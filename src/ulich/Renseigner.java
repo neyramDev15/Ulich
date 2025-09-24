@@ -4,6 +4,9 @@
  */
 package ulich;
 
+import java.awt.BorderLayout;
+import javax.swing.Timer;
+
 /**
  *
  * @author HP
@@ -16,6 +19,7 @@ public class Renseigner extends javax.swing.JFrame {
      */
     public Renseigner() {
         initComponents();
+        
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         final int maxW = (int) (screenSize.width * 0.9);   // 90% de l'écran
         final int maxH = (int) (screenSize.height * 0.9);  // 90% de l'écran
@@ -42,6 +46,10 @@ public class Renseigner extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         // --- fin ---
         
+        Timer timer = new Timer(5000, e -> afficherPageOperation());
+        timer.setRepeats(false);
+        timer.start();
+        
     }
 
     /**
@@ -63,15 +71,12 @@ public class Renseigner extends javax.swing.JFrame {
         jButtonCaisse = new javax.swing.JButton();
         jButtonOperation = new javax.swing.JButton();
         jButtonConnexion = new javax.swing.JButton();
-        jButtonRapport = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel5 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
+        jButtonDeconnecter = new javax.swing.JButton();
+        jPanelAction = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setPreferredSize(new java.awt.Dimension(890, 658));
 
         jPanel3.setLayout(new java.awt.GridLayout(1, 0));
 
@@ -94,19 +99,24 @@ public class Renseigner extends javax.swing.JFrame {
         jButtonCaisse.setBackground(new java.awt.Color(204, 102, 0));
         jButtonCaisse.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jButtonCaisse.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCaisse.setText("Solde de la caisse");
+        jButtonCaisse.setText("Générer un rapport");
         jButtonCaisse.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
 
         jButtonOperation.setBackground(new java.awt.Color(204, 102, 0));
         jButtonOperation.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jButtonOperation.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonOperation.setText("Faire une opération");
+        jButtonOperation.setText("Solde de la caisse");
         jButtonOperation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
+        jButtonOperation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonOperationActionPerformed(evt);
+            }
+        });
 
         jButtonConnexion.setBackground(new java.awt.Color(204, 102, 0));
         jButtonConnexion.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jButtonConnexion.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonConnexion.setText("Se connecter");
+        jButtonConnexion.setText("Faire une opération");
         jButtonConnexion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
         jButtonConnexion.setOpaque(true);
         jButtonConnexion.addActionListener(new java.awt.event.ActionListener() {
@@ -115,28 +125,23 @@ public class Renseigner extends javax.swing.JFrame {
             }
         });
 
-        jButtonRapport.setBackground(new java.awt.Color(204, 102, 0));
-        jButtonRapport.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jButtonRapport.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonRapport.setText("Générer un rapport");
-        jButtonRapport.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
-        jButtonRapport.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonRapportActionPerformed(evt);
-            }
-        });
-
         jPanel2.setOpaque(false);
+
+        jButtonDeconnecter.setBackground(new java.awt.Color(204, 102, 0));
+        jButtonDeconnecter.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jButtonDeconnecter.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonDeconnecter.setText("Se déconnecter");
+        jButtonDeconnecter.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addComponent(jButtonDeconnecter, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 74, Short.MAX_VALUE)
+            .addComponent(jButtonDeconnecter, javax.swing.GroupLayout.DEFAULT_SIZE, 74, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanelAcceuilLayout = new javax.swing.GroupLayout(jPanelAcceuil);
@@ -150,7 +155,6 @@ public class Renseigner extends javax.swing.JFrame {
             .addComponent(jButtonConnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
             .addComponent(jButtonOperation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButtonRapport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelAcceuilLayout.setVerticalGroup(
             jPanelAcceuilLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,9 +168,7 @@ public class Renseigner extends javax.swing.JFrame {
                 .addComponent(jButtonOperation, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
                 .addComponent(jButtonCaisse, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, Short.MAX_VALUE)
-                .addComponent(jButtonRapport, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 361, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -174,65 +176,18 @@ public class Renseigner extends javax.swing.JFrame {
 
         jPanelTablBord.add(jPanelAcceuil, java.awt.BorderLayout.CENTER);
 
-        jPanel6.setBackground(new java.awt.Color(251, 252, 210));
+        jPanelAction.setBackground(new java.awt.Color(251, 252, 210));
+        jPanelAction.setPreferredSize(new java.awt.Dimension(528, 812));
 
-        jLabel1.setText("jLabel1");
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 510, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanelActionLayout = new javax.swing.GroupLayout(jPanelAction);
+        jPanelAction.setLayout(jPanelActionLayout);
+        jPanelActionLayout.setHorizontalGroup(
+            jPanelActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 528, Short.MAX_VALUE)
         );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanelActionLayout.setVerticalGroup(
+            jPanelActionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 274, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 265, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -242,14 +197,14 @@ public class Renseigner extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanelTablBord, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jPanelAction, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jPanelTablBord, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelAction, javax.swing.GroupLayout.DEFAULT_SIZE, 814, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel4);
@@ -275,62 +230,45 @@ public class Renseigner extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonConnexionActionPerformed
 
-    private void jButtonRapportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonRapportActionPerformed
+    private void jButtonOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOperationActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonRapportActionPerformed
+    }//GEN-LAST:event_jButtonOperationActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Renseigner.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Renseigner.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Renseigner.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Renseigner.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Renseigner().setVisible(true);
-            }
-        });
-    }
+   
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCaisse;
     private javax.swing.JButton jButtonConnexion;
+    private javax.swing.JButton jButtonDeconnecter;
     private javax.swing.JButton jButtonOperation;
-    private javax.swing.JButton jButtonRapport;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabelAccueil;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel5;
-    private javax.swing.JPanel jPanel6;
-    private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanelAcceuil;
+    private javax.swing.JPanel jPanelAction;
     private javax.swing.JPanel jPanelTablBord;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    private Timer afficherPageOperation() {
+        // Vider le panel contenu
+    jPanelAction.removeAll();
+    jPanelAction.setLayout(new BorderLayout());
+
+    // Créer ton panel de connexion
+    JPanelRapport panelOperation = new JPanelRapport();
+
+    // L'ajouter dans le centre
+    jPanelAction.setLayout(new BorderLayout());
+    jPanelAction.add(panelOperation, BorderLayout.CENTER);
+
+    // Rafraîchir
+    jPanelAction.revalidate();
+    jPanelAction.repaint();
+        return null;
+
+    }
 }
+

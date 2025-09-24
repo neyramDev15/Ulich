@@ -4,6 +4,16 @@
  */
 package ulich;
 
+import javax.swing.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
+
 
 
 /**
@@ -45,7 +55,52 @@ public class MainUli extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
         // --- fin ---
+        
+        this.setLayout(new BorderLayout());
+        
+        //BARRE VERTICALE OUEST
+        jPanelUli1.setPreferredSize(new Dimension(150,0));
+        this.add(jPanelUli1, BorderLayout.WEST);
+       
+        //BARRE HORIZONTALE NORD
+        JPanel panelDroite = new JPanel(new BorderLayout());
+    this.add(panelDroite, BorderLayout.CENTER);
+        jPanelBienvenue.setPreferredSize(new Dimension(0,90));
+        panelDroite.add(jPanelBienvenue, BorderLayout.NORTH);
+        
+        //PANEL CENTRAL CONTENU
+        panelDroite.add(jPanelContenu, BorderLayout.CENTER);
+        jPanelContenu.setBackground(new Color(251,252,210));
+        jPanelContenu.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        //label avec photo
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.9; // 90% de l'espace pour la photo
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.fill = GridBagConstraints.NONE; // 
+        gbc.insets = new Insets(10, 20, 20, 20);
+        jPanelContenu.add(jLabelPhoto, gbc); 
+        
+        // Pour le label avec texte
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
+        gbc.weighty = 0.1; // 10% pour le texte
+        gbc.anchor = GridBagConstraints.NORTH;
+        gbc.fill = GridBagConstraints.NONE; 
+        gbc.insets = new Insets(30, 20, 0, 20);
+        jPanelContenu.add(jLabelDans, gbc); // 
 
+        
+        
+        // Timer de 5 secondes avant de charger la page de connexion
+        Timer timer = new Timer(5000, e -> afficherPageConnexion());
+        timer.setRepeats(false);
+        timer.start();
+
+       
     }
 
     /**
@@ -64,14 +119,14 @@ public class MainUli extends javax.swing.JFrame {
     
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
-        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanelUli1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
         jPanelBienvenue = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel1 = new javax.swing.JPanel();
+        jPanelContenu = new javax.swing.JPanel();
+        jLabelDans = new javax.swing.JLabel();
+        jLabelPhoto = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -84,19 +139,6 @@ public class MainUli extends javax.swing.JFrame {
         jLabel1.setText("ULI");
         jPanelUli1.add(jLabel1, new java.awt.GridBagConstraints());
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
-        );
-
-        jPanelUli1.add(jPanel2, new java.awt.GridBagConstraints());
-
         jPanelBienvenue.setBackground(new java.awt.Color(251, 252, 210));
         jPanelBienvenue.setLayout(new java.awt.GridBagLayout());
 
@@ -107,17 +149,26 @@ public class MainUli extends javax.swing.JFrame {
         jLabel2.setPreferredSize(new java.awt.Dimension(450, 89));
         jPanelBienvenue.add(jLabel2, new java.awt.GridBagConstraints());
 
-        jPanel1.setBackground(new java.awt.Color(251, 252, 210));
+        jPanelContenu.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 501, Short.MAX_VALUE)
+        jLabelDans.setFont(new java.awt.Font("Vivaldi", 0, 70)); // NOI18N
+        jLabelDans.setForeground(new java.awt.Color(153, 51, 0));
+        jLabelDans.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelDans.setText("Dans Uli Application");
+
+        javax.swing.GroupLayout jPanelContenuLayout = new javax.swing.GroupLayout(jPanelContenu);
+        jPanelContenu.setLayout(jPanelContenuLayout);
+        jPanelContenuLayout.setHorizontalGroup(
+            jPanelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabelDans, javax.swing.GroupLayout.DEFAULT_SIZE, 634, Short.MAX_VALUE)
+            .addComponent(jLabelPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 466, Short.MAX_VALUE)
+        jPanelContenuLayout.setVerticalGroup(
+            jPanelContenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelContenuLayout.createSequentialGroup()
+                .addComponent(jLabelDans, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabelPhoto, javax.swing.GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -125,21 +176,22 @@ public class MainUli extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelUli1, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelBienvenue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanelUli1, javax.swing.GroupLayout.PREFERRED_SIZE, 246, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanelBienvenue, javax.swing.GroupLayout.PREFERRED_SIZE, 598, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jPanelContenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addContainerGap())))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanelUli1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelBienvenue, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanelContenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -184,9 +236,29 @@ public class MainUli extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabelDans;
+    private javax.swing.JLabel jLabelPhoto;
     private javax.swing.JPanel jPanelBienvenue;
+    private javax.swing.JPanel jPanelContenu;
     private javax.swing.JPanel jPanelUli1;
     // End of variables declaration//GEN-END:variables
+
+    private void afficherPageConnexion() {
+    // Vider le panel contenu
+    jPanelContenu.removeAll();
+    jPanelContenu.setLayout(new BorderLayout());
+
+    // Créer ton panel de connexion
+    JPanelConnection panelConnexion = new JPanelConnection();
+
+    // L'ajouter dans le centre
+    jPanelContenu.setLayout(new BorderLayout());
+    jPanelContenu.add(panelConnexion, BorderLayout.CENTER);
+
+    // Rafraîchir
+    jPanelContenu.revalidate();
+    jPanelContenu.repaint();
+
+
+    }
 }
