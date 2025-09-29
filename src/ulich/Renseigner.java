@@ -4,9 +4,10 @@
  */
 package ulich;
 
-import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import javax.swing.Timer;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
 
 /**
  *
@@ -17,13 +18,18 @@ public class Renseigner extends javax.swing.JFrame {
     private Operation panelOperation;
     private JPanelRapport panelRapport;
     private JPanelCaisse panelCaisse;
+    private JPanel emptyPanel;
+    private int userId;
 
 
     /**
      * Creates new form Renseigner
      */
-    public Renseigner() {
+    public Renseigner(int userId) {
         initComponents();
+        
+        this.userId = userId;
+        
         
         java.awt.Dimension screenSize = java.awt.Toolkit.getDefaultToolkit().getScreenSize();
         final int maxW = (int) (screenSize.width * 0.9);   // 90% de l'écran
@@ -55,16 +61,32 @@ public class Renseigner extends javax.swing.JFrame {
         timer.setRepeats(false);
         timer.start();*/
         
+        jPanelAction.removeAll();
         cardLayout = new CardLayout();
         jPanelAction.setLayout(cardLayout);
         
-        panelOperation = new Operation();
+        emptyPanel = new JPanel(new java.awt.BorderLayout());
+        emptyPanel.setBackground(new java.awt.Color(251, 252, 210));
+        JLabel lblAccueil = new JLabel("Sélectionnez une action dans le menu à gauche");
+        lblAccueil.setFont(new java.awt.Font("Vivaldi", java.awt.Font.BOLD, 28)); 
+        lblAccueil.setForeground(new java.awt.Color(153, 51, 0));
+        emptyPanel.add(lblAccueil);
+        emptyPanel.add(lblAccueil, java.awt.BorderLayout.CENTER);
+        jPanelAction.add(emptyPanel, "empty");
+        
+        panelOperation = new Operation(userId);
         panelRapport = new JPanelRapport();
         panelCaisse = new JPanelCaisse();
         
         jPanelAction.add(panelOperation, "operation");
         jPanelAction.add(panelRapport, "rapport");
         jPanelAction.add(panelCaisse, "caisse");
+        
+        cardLayout.show(jPanelAction, "empty");
+        
+        jPanelAction.revalidate();
+        jPanelAction.repaint();
+
         
         jButtonCaisse.addActionListener(e -> {
         cardLayout.show(jPanelAction, "caisse");
@@ -73,7 +95,7 @@ public class Renseigner extends javax.swing.JFrame {
         cardLayout.show(jPanelAction, "rapport");
         });
         jButtonOperation.addActionListener(e -> {
-        cardLayout.show(jPanelAction, "Operation");
+        cardLayout.show(jPanelAction, "operation");
         });
     }
                 
@@ -115,7 +137,7 @@ public class Renseigner extends javax.swing.JFrame {
         jLabelAccueil.setFont(new java.awt.Font("Vivaldi", 1, 36)); // NOI18N
         jLabelAccueil.setForeground(new java.awt.Color(255, 255, 255));
         jLabelAccueil.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelAccueil.setText("Accueil");
+        jLabelAccueil.setText("Menu");
 
         jSeparator1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
@@ -157,6 +179,11 @@ public class Renseigner extends javax.swing.JFrame {
         jButtonDeconnecter.setForeground(new java.awt.Color(255, 255, 255));
         jButtonDeconnecter.setText("Se déconnecter");
         jButtonDeconnecter.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
+        jButtonDeconnecter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonDeconnecterActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -253,11 +280,21 @@ public class Renseigner extends javax.swing.JFrame {
 
     private void jButtonOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOperationActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_jButtonOperationActionPerformed
 
     private void jButtonCaisseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCaisseActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonCaisseActionPerformed
+
+    private void jButtonDeconnecterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDeconnecterActionPerformed
+        // TODO add your handling code here:
+        MainUli login = new MainUli();
+        login.setVisible(true);
+        login.setLocationRelativeTo(null); 
+        this.dispose();  
+       
+    }//GEN-LAST:event_jButtonDeconnecterActionPerformed
 
    
 

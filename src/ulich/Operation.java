@@ -7,6 +7,7 @@ package ulich;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -14,18 +15,23 @@ import javax.swing.JPanel;
  * @author HP
  */
 public class Operation extends javax.swing.JPanel {
+    private int userId;
 
     /**
      * Creates new form Operation
      */
-    public Operation() {
+    public Operation(int userId) {
         initComponents();
         
-        this.setLayout(new BorderLayout());
+        this.userId = userId;
         
+                
+
+        this.setLayout(new BorderLayout());
+
         this.add(jPanelEnTete, BorderLayout.NORTH);
         JPanel panelCentre = new JPanel(new GridBagLayout());
-        panelCentre.setBackground(new Color(251,252,210));
+        panelCentre.setBackground(new Color(251, 252, 210));
         panelCentre.add(jPanelOpe);
         this.add(panelCentre, BorderLayout.CENTER);
     }
@@ -47,11 +53,12 @@ public class Operation extends javax.swing.JPanel {
         jLabelDate = new javax.swing.JLabel();
         jLabelMotif = new javax.swing.JLabel();
         jTextFieldMontant = new javax.swing.JTextField();
-        jTextFieldMotif = new javax.swing.JTextField();
         jComboBoxType = new javax.swing.JComboBox<>();
         jTextFieldDate = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonValider = new javax.swing.JButton();
+        jComboBoxType1 = new javax.swing.JComboBox<>();
+        jLabelJustificatif = new javax.swing.JLabel();
+        jTextFieldJustification = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(528, 484));
 
@@ -88,14 +95,6 @@ public class Operation extends javax.swing.JPanel {
             }
         });
 
-        jTextFieldMotif.setBackground(new java.awt.Color(251, 252, 210));
-        jTextFieldMotif.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jTextFieldMotif.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldMotifActionPerformed(evt);
-            }
-        });
-
         jComboBoxType.setBackground(new java.awt.Color(251, 252, 210));
         jComboBoxType.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jComboBoxType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Entrée", "Sortie", " " }));
@@ -103,44 +102,57 @@ public class Operation extends javax.swing.JPanel {
         jTextFieldDate.setBackground(new java.awt.Color(251, 252, 210));
         jTextFieldDate.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
 
-        jButton2.setBackground(new java.awt.Color(251, 252, 210));
-        jButton2.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(153, 51, 0));
-        jButton2.setText("Annuler");
-        jButton2.setBorder(null);
+        jButtonValider.setBackground(new java.awt.Color(251, 252, 210));
+        jButtonValider.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jButtonValider.setForeground(new java.awt.Color(153, 51, 0));
+        jButtonValider.setText("Valider");
+        jButtonValider.setBorder(null);
+        jButtonValider.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonValiderActionPerformed(evt);
+            }
+        });
 
-        jButton3.setBackground(new java.awt.Color(251, 252, 210));
-        jButton3.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(153, 51, 0));
-        jButton3.setText("Valider");
-        jButton3.setBorder(null);
+        jComboBoxType1.setBackground(new java.awt.Color(251, 252, 210));
+        jComboBoxType1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jComboBoxType1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Quête", "Dîme", "Payement", "Don aux pauvres", " " }));
+
+        jLabelJustificatif.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jLabelJustificatif.setText("Justificatif");
+
+        jTextFieldJustification.setBackground(new java.awt.Color(251, 252, 210));
+        jTextFieldJustification.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jTextFieldJustification.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextFieldJustificationActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelOpeLayout = new javax.swing.GroupLayout(jPanelOpe);
         jPanelOpe.setLayout(jPanelOpeLayout);
         jPanelOpeLayout.setHorizontalGroup(
             jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonValider, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(150, 150, 150))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createSequentialGroup()
+                .addGap(68, 68, 68)
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanelOpeLayout.createSequentialGroup()
-                        .addGap(68, 68, 68)
-                        .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jLabelMontant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelMotif, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addGap(70, 70, 70)
+                    .addComponent(jLabelJustificatif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelMontant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelMotif, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(70, 70, 70)
+                .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldMotif, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jTextFieldMontant, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                    .addGroup(jPanelOpeLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jButton3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jButton2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 86, Short.MAX_VALUE))))
+                            .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldMontant, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jComboBoxType1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldJustification, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(68, 68, 68))
         );
         jPanelOpeLayout.setVerticalGroup(
@@ -161,12 +173,14 @@ public class Operation extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelMotif, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldMotif, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 87, Short.MAX_VALUE)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
+                    .addComponent(jComboBoxType1, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(30, 30, 30)
+                .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabelJustificatif, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldJustification, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                .addComponent(jButtonValider, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(94, 94, 94))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -183,24 +197,33 @@ public class Operation extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelEnTete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanelOpe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(jPanelOpe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(12, 12, 12))
         );
     }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextFieldMotifActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMotifActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldMotifActionPerformed
 
     private void jTextFieldMontantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldMontantActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldMontantActionPerformed
 
+    private void jButtonValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValiderActionPerformed
+        // TODO add your handling code here:
+        enregistrerOperation();
+        
+        
+    }//GEN-LAST:event_jButtonValiderActionPerformed
+
+    private void jTextFieldJustificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldJustificationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldJustificationActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonValider;
     private javax.swing.JComboBox<String> jComboBoxType;
+    private javax.swing.JComboBox<String> jComboBoxType1;
     private javax.swing.JLabel jLabelDate;
+    private javax.swing.JLabel jLabelJustificatif;
     private javax.swing.JLabel jLabelMontant;
     private javax.swing.JLabel jLabelMotif;
     private javax.swing.JLabel jLabelOperation;
@@ -208,7 +231,21 @@ public class Operation extends javax.swing.JPanel {
     private javax.swing.JPanel jPanelEnTete;
     private javax.swing.JPanel jPanelOpe;
     private javax.swing.JTextField jTextFieldDate;
+    private javax.swing.JTextField jTextFieldJustification;
     private javax.swing.JTextField jTextFieldMontant;
-    private javax.swing.JTextField jTextFieldMotif;
     // End of variables declaration//GEN-END:variables
+
+    private void enregistrerOperation() {
+        String nom = "Opératon";
+        String montantText = jTextFieldMontant.getSelectedText();
+        double montant;  
+        
+        try {
+            montant = Double.parseDouble(montantText);
+            
+        }catch(NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Le montant est invalide!");
+            
+        }
+    }
 }

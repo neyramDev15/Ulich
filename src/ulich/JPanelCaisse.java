@@ -18,6 +18,8 @@ public class JPanelCaisse extends javax.swing.JPanel {
     /**
      * Creates new form JPanelCaisse
      */
+    private double soldeCaisse;
+  
     public JPanelCaisse() {
         initComponents();
         
@@ -28,6 +30,30 @@ public class JPanelCaisse extends javax.swing.JPanel {
         panelCentre.setBackground(new Color(251,252,210));
         panelCentre.add(jPanelSolde2);
         this.add(panelCentre, BorderLayout.CENTER);
+        
+        updateSoldeLabel();
+    }
+    
+    private void initialiserCaisse() {
+        // Charger le solde initial depuis votre source de données
+        this.soldeCaisse = chargerSoldeInitial();
+    }
+    
+    public void ajouterMontant(double montant){
+        soldeCaisse += montant;
+        updateSoldeLabel();
+    }
+    
+    public void retirerMontant(double montant){
+        soldeCaisse -= montant;
+        updateSoldeLabel();
+    }
+    private void updateSoldeLabel(){
+        jLabelSolde1.setText("Solde : " + soldeCaisse + "FCFA");
+    }
+    
+    public double getSolde(){
+        return soldeCaisse;
     }
 
     /**
@@ -45,8 +71,8 @@ public class JPanelCaisse extends javax.swing.JPanel {
         jLabelSolde = new javax.swing.JLabel();
         jLabelNom = new javax.swing.JLabel();
         jComboBoxNom = new javax.swing.JComboBox<>();
-        jTextFieldSolde = new javax.swing.JTextField();
         jButtonFermer = new javax.swing.JButton();
+        jLabelSolde1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(528, 484));
 
@@ -74,13 +100,13 @@ public class JPanelCaisse extends javax.swing.JPanel {
         jComboBoxNom.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jComboBoxNom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Caisse Générale", "Caisse Dîme", "Caisse Quête" }));
 
-        jTextFieldSolde.setBackground(new java.awt.Color(251, 252, 210));
-        jTextFieldSolde.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-
         jButtonFermer.setBackground(new java.awt.Color(251, 252, 210));
         jButtonFermer.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jButtonFermer.setText("Fermer");
         jButtonFermer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210)));
+
+        jLabelSolde1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jLabelSolde1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout jPanelSolde2Layout = new javax.swing.GroupLayout(jPanelSolde2);
         jPanelSolde2.setLayout(jPanelSolde2Layout);
@@ -94,7 +120,7 @@ public class JPanelCaisse extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanelSolde2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jComboBoxNom, 0, 213, Short.MAX_VALUE)
-                    .addComponent(jTextFieldSolde))
+                    .addComponent(jLabelSolde1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(43, 43, 43))
             .addGroup(jPanelSolde2Layout.createSequentialGroup()
                 .addGap(202, 202, 202)
@@ -111,7 +137,7 @@ public class JPanelCaisse extends javax.swing.JPanel {
                 .addGap(89, 89, 89)
                 .addGroup(jPanelSolde2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelSolde, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldSolde, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabelSolde1, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
                 .addComponent(jButtonFermer, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18))
@@ -142,8 +168,8 @@ public class JPanelCaisse extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelNom;
     private javax.swing.JLabel jLabelOperation;
     private javax.swing.JLabel jLabelSolde;
+    private javax.swing.JLabel jLabelSolde1;
     private javax.swing.JPanel jPanelSolde1;
     private javax.swing.JPanel jPanelSolde2;
-    private javax.swing.JTextField jTextFieldSolde;
     // End of variables declaration//GEN-END:variables
 }

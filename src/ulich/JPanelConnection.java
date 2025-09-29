@@ -4,12 +4,16 @@
  */
 package ulich;
 
+import java.sql.ResultSet;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import db.DataBaseConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
@@ -26,36 +30,33 @@ public class JPanelConnection extends javax.swing.JPanel {
      */
     public JPanelConnection() {
         initComponents();
-        
+
         this.setLayout(new BorderLayout());
-        
+
         this.add(jPanelRenseigner, BorderLayout.NORTH);
         JPanel panelCentre = new JPanel(new GridBagLayout());
-        panelCentre.setBackground(new Color(251,252,210));
+        panelCentre.setBackground(new Color(251, 252, 210));
         panelCentre.add(jPanelformulaire);
         this.add(panelCentre, BorderLayout.CENTER);
-        
-    
-        
+
         styliserBouton(jButtonConnection);
         styliserBouton(jButtonAnnuler);
         styliserComboBox(jComboBoxFonction);
-    }   
-    
+    }
+
     private void styliserBouton(JButton btn) {
-            Color customColor = new Color(251, 252, 210);
-            btn.setBackground(customColor);
-            btn.setBorderPainted(false);
-            btn.setFocusPainted(false);
-            btn.setContentAreaFilled(true);
-            btn.setOpaque(true);
-        }
-        
-        private void styliserComboBox(JComboBox comboBox) {
+        Color customColor = new Color(251, 252, 210);
+        btn.setBackground(customColor);
+        btn.setBorderPainted(false);
+        btn.setFocusPainted(false);
+        btn.setContentAreaFilled(true);
+        btn.setOpaque(true);
+    }
+
+    private void styliserComboBox(JComboBox comboBox) {
         Color customColor = new Color(251, 252, 210);
         comboBox.setBackground(customColor);
-        
-        
+
     }
 
     /**
@@ -237,13 +238,10 @@ public class JPanelConnection extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextFieldPrenomActionPerformed
 
     private void jButtonConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectionActionPerformed
-        connecterUtilisateur();
-        Renseigner fenetre= new Renseigner();
-        fenetre.setVisible(true);
-        
-        java.awt.Window window=javax.swing.SwingUtilities.getWindowAncestor(JPanelConnection.this);
-        if(window != null){
-            window.dispose();
+        try {
+            connecterUtilisateur();
+        } catch (SQLException ex) {
+            Logger.getLogger(JPanelConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_jButtonConnectionActionPerformed
 
@@ -255,7 +253,6 @@ public class JPanelConnection extends javax.swing.JPanel {
     /*private void setResizable(boolean b) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }*/
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnnuler;
@@ -273,69 +270,77 @@ public class JPanelConnection extends javax.swing.JPanel {
     private javax.swing.JTextField jTextFieldPrenom;
     // End of variables declaration//GEN-END:variables
 
-    private void connecterUtilisateur() {
-    // Récupérer les valeurs
-    String nom = jTextField1Nom.getText().trim();
-    String prenom = jTextFieldPrenom.getText().trim();
-    String fonction = (String) jComboBoxFonction.getSelectedItem();
-    String motDePasse = new String(jPasswordFieldMotDePasse.getPassword());
-    
-    // Validation simple
-    if (nom.isEmpty() || prenom.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Veuillez saisir nom et prénom", "Erreur", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    if ("Choisir...".equals(fonction)) {
-        JOptionPane.showMessageDialog(this, "Veuillez choisir une fonction", "Erreur", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-    
-    // Vérification basique (à adapter)
-    if (verifierConnexion(nom, prenom, fonction, motDePasse)) {
-        JOptionPane.showMessageDialog(this, 
-            "Connexion réussie!\nBienvenue " + prenom + " " + nom, 
-            "Succès", 
-            JOptionPane.INFORMATION_MESSAGE);
-        
-        // Rediriger vers l'application principale
-        redirigerVersApplication(fonction);
-    } else {
-        JOptionPane.showMessageDialog(this, "Identifiants incorrects", "Erreur", JOptionPane.ERROR_MESSAGE);
-    }
-}
+    private void connecterUtilisateur() throws SQLException {
+        // Récupérer les valeurs
+        String nom = jTextField1Nom.getText();
+        String prenom = jTextFieldPrenom.getText();
+        String fonction = (String) jComboBoxFonction.getSelectedItem();
+        String motDePasse = new String(jPasswordFieldMotDePasse.getPassword());
 
-private boolean verifierConnexion(String nom, String prenom, String fonction, String motDePasse) {
-    // Exemple simple - à remplacer par votre vraie logique
-    return !motDePasse.isEmpty(); // Accepte tout mot de passe non vide pour tester
-}
+        // Validation simple
+        if (nom.isEmpty() || prenom.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Veuillez saisir nom et prénom", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
 
-private void redirigerVersApplication(String fonction) {
-    // Cacher ce panel
-    this.setVisible(false);
-    
-    // Trouver la fenêtre parente et la fermer
-    java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
-    if (parentWindow != null) {
-        parentWindow.dispose();
+        if ("Choisir...".equals(fonction)) {
+            JOptionPane.showMessageDialog(this, "Veuillez choisir une fonction", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try ( Connection connection = DataBaseConnection.getConnection()) {
+            String query = "SELECT * FROM Users WHERE Nom = ? AND Prenoms = ? AND MotDePasse = ? AND Fonction = ? ";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, nom);
+            preparedStatement.setString(2, prenom);
+            preparedStatement.setString(3, motDePasse);
+            preparedStatement.setString(4, fonction);
+            //on utilise un type ResultSet qui va verifier si le user existe
+            ResultSet resultSet = preparedStatement.executeQuery();
+            //si le user existe on lui creer une fenetre main
+            if (resultSet.next()) {
+                int userId = resultSet.getInt("id");
+                Renseigner m = new Renseigner(userId);
+                m.setVisible(true);
+            } else {
+                JOptionPane.showMessageDialog(this, "Nom ou mot de passe incorrect" );
+            }        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Erreur de connection");
+        }
+
     }
-    
-    // Ouvrir la fenêtre principale selon le rôle
-    // Exemple: new FenetrePrincipale(fonction).setVisible(true);
-}
+
+    /*private boolean verifierConnexion(String nom, String prenom, String fonction, String motDePasse) {
+        // Exemple simple - à remplacer par votre vraie logique
+        return !motDePasse.isEmpty(); // Accepte tout mot de passe non vide pour tester
+    }*/
+
+    private void redirigerVersApplication(String fonction) {
+        // Cacher ce panel
+        this.setVisible(false);
+
+        // Trouver la fenêtre parente et la fermer
+        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
+        if (parentWindow != null) {
+            parentWindow.dispose();
+        }
+
+        // Ouvrir la fenêtre principale selon le rôle
+        // Exemple: new FenetrePrincipale(fonction).setVisible(true);
+    }
 
     private void annulerConnection() {
-        
-        Object[] options={"Oui","Nom"};
+
+        Object[] options = {"Oui", "Nom"};
         // Demander confirmation
         int confirmation = JOptionPane.showOptionDialog(this,
-            "Voulez-vous vraiment annuler la connexion ?\nTous les champs seront effacés.",
-            "Confirmation d'annulation",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE,
+                "Voulez-vous vraiment annuler la connexion ?\nTous les champs seront effacés.",
+                "Confirmation d'annulation",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
                 null,
-        options,
-        options[0]
+                options,
+                options[0]
         );
         if (confirmation == JOptionPane.YES_OPTION) {
             // Vider tous les champs
@@ -345,10 +350,10 @@ private void redirigerVersApplication(String fonction) {
             jPasswordFieldMotDePasse.setText("");
 
             JOptionPane.showMessageDialog(this,
-                "Connexion annulée\nChamps réinitialisés",
-                "Annulation",
-                JOptionPane.INFORMATION_MESSAGE);
+                    "Connexion annulée\nChamps réinitialisés",
+                    "Annulation",
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    
+
 }
