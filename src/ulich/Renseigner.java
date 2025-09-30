@@ -5,6 +5,7 @@
 package ulich;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import javax.swing.Timer;
 
 /**
@@ -12,6 +13,10 @@ import javax.swing.Timer;
  * @author HP
  */
 public class Renseigner extends javax.swing.JFrame {
+    private CardLayout cardLayout;
+    private Operation panelOperation;
+    private JPanelRapport panelRapport;
+    private JPanelCaisse panelCaisse;
 
 
     /**
@@ -46,12 +51,32 @@ public class Renseigner extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         // --- fin ---
         
-        Timer timer = new Timer(5000, e -> afficherPageOperation());
+        /*Timer timer = new Timer(5000, e -> afficherPageOperation());
         timer.setRepeats(false);
-        timer.start();
+        timer.start();*/
         
+        cardLayout = new CardLayout();
+        jPanelAction.setLayout(cardLayout);
+        
+        panelOperation = new Operation();
+        panelRapport = new JPanelRapport();
+        panelCaisse = new JPanelCaisse();
+        
+        jPanelAction.add(panelOperation, "operation");
+        jPanelAction.add(panelRapport, "rapport");
+        jPanelAction.add(panelCaisse, "caisse");
+        
+        jButtonCaisse.addActionListener(e -> {
+        cardLayout.show(jPanelAction, "caisse");
+        });
+        jButtonRapport.addActionListener(e -> {
+        cardLayout.show(jPanelAction, "rapport");
+        });
+        jButtonOperation.addActionListener(e -> {
+        cardLayout.show(jPanelAction, "Operation");
+        });
     }
-
+                
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -68,9 +93,9 @@ public class Renseigner extends javax.swing.JFrame {
         jLabelAccueil = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
+        jButtonRapport = new javax.swing.JButton();
         jButtonCaisse = new javax.swing.JButton();
         jButtonOperation = new javax.swing.JButton();
-        jButtonConnexion = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButtonDeconnecter = new javax.swing.JButton();
         jPanelAction = new javax.swing.JPanel();
@@ -96,32 +121,32 @@ public class Renseigner extends javax.swing.JFrame {
 
         jPanel1.setLayout(new java.awt.BorderLayout(1, 4));
 
+        jButtonRapport.setBackground(new java.awt.Color(204, 102, 0));
+        jButtonRapport.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
+        jButtonRapport.setForeground(new java.awt.Color(255, 255, 255));
+        jButtonRapport.setText("Générer un rapport");
+        jButtonRapport.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
+
         jButtonCaisse.setBackground(new java.awt.Color(204, 102, 0));
         jButtonCaisse.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jButtonCaisse.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonCaisse.setText("Générer un rapport");
+        jButtonCaisse.setText("Solde de la caisse");
         jButtonCaisse.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
+        jButtonCaisse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCaisseActionPerformed(evt);
+            }
+        });
 
         jButtonOperation.setBackground(new java.awt.Color(204, 102, 0));
         jButtonOperation.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
         jButtonOperation.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonOperation.setText("Solde de la caisse");
+        jButtonOperation.setText("Faire une opération");
         jButtonOperation.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
+        jButtonOperation.setOpaque(true);
         jButtonOperation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonOperationActionPerformed(evt);
-            }
-        });
-
-        jButtonConnexion.setBackground(new java.awt.Color(204, 102, 0));
-        jButtonConnexion.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
-        jButtonConnexion.setForeground(new java.awt.Color(255, 255, 255));
-        jButtonConnexion.setText("Faire une opération");
-        jButtonConnexion.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0), new java.awt.Color(204, 102, 0)));
-        jButtonConnexion.setOpaque(true);
-        jButtonConnexion.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonConnexionActionPerformed(evt);
             }
         });
 
@@ -151,9 +176,9 @@ public class Renseigner extends javax.swing.JFrame {
             .addComponent(jLabelAccueil, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jSeparator1, javax.swing.GroupLayout.Alignment.TRAILING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButtonRapport, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButtonOperation, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
             .addComponent(jButtonCaisse, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jButtonConnexion, javax.swing.GroupLayout.DEFAULT_SIZE, 233, Short.MAX_VALUE)
-            .addComponent(jButtonOperation, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanelAcceuilLayout.setVerticalGroup(
@@ -163,11 +188,11 @@ public class Renseigner extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButtonConnexion, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
                 .addComponent(jButtonOperation, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(60, 60, 60)
                 .addComponent(jButtonCaisse, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addComponent(jButtonRapport, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 361, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -226,21 +251,21 @@ public class Renseigner extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonConnexionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnexionActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonConnexionActionPerformed
-
     private void jButtonOperationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonOperationActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButtonOperationActionPerformed
+
+    private void jButtonCaisseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCaisseActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonCaisseActionPerformed
 
    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCaisse;
-    private javax.swing.JButton jButtonConnexion;
     private javax.swing.JButton jButtonDeconnecter;
     private javax.swing.JButton jButtonOperation;
+    private javax.swing.JButton jButtonRapport;
     private javax.swing.JLabel jLabelAccueil;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
@@ -252,7 +277,7 @@ public class Renseigner extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
-    private Timer afficherPageOperation() {
+    /*private Timer afficherPageOperation() {
         // Vider le panel contenu
     jPanelAction.removeAll();
     jPanelAction.setLayout(new BorderLayout());
@@ -269,6 +294,6 @@ public class Renseigner extends javax.swing.JFrame {
     jPanelAction.repaint();
         return null;
 
-    }
+    }*/
 }
 

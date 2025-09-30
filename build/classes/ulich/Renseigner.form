@@ -104,9 +104,9 @@
                           <Component id="jLabelAccueil" alignment="1" max="32767" attributes="0"/>
                           <Component id="jSeparator1" alignment="1" max="32767" attributes="0"/>
                           <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jButtonRapport" alignment="1" max="32767" attributes="0"/>
+                          <Component id="jButtonOperation" alignment="0" pref="233" max="32767" attributes="0"/>
                           <Component id="jButtonCaisse" alignment="1" max="32767" attributes="0"/>
-                          <Component id="jButtonConnexion" alignment="0" pref="233" max="32767" attributes="0"/>
-                          <Component id="jButtonOperation" alignment="1" max="32767" attributes="0"/>
                           <Component id="jPanel2" alignment="1" max="32767" attributes="0"/>
                       </Group>
                     </DimensionLayout>
@@ -117,11 +117,11 @@
                               <EmptySpace max="-2" attributes="0"/>
                               <Component id="jSeparator1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="jButtonConnexion" min="-2" pref="57" max="-2" attributes="0"/>
-                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                               <Component id="jButtonOperation" min="-2" pref="57" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                               <Component id="jButtonCaisse" min="-2" pref="57" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
+                              <Component id="jButtonRapport" min="-2" pref="57" max="-2" attributes="0"/>
                               <EmptySpace pref="361" max="32767" attributes="0"/>
                               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
@@ -159,7 +159,7 @@
                         <Property name="verticalGap" type="int" value="4"/>
                       </Layout>
                     </Container>
-                    <Component class="javax.swing.JButton" name="jButtonCaisse">
+                    <Component class="javax.swing.JButton" name="jButtonRapport">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="0" green="66" red="cc" type="rgb"/>
@@ -183,7 +183,7 @@
                         </Property>
                       </Properties>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButtonOperation">
+                    <Component class="javax.swing.JButton" name="jButtonCaisse">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="0" green="66" red="cc" type="rgb"/>
@@ -207,10 +207,10 @@
                         </Property>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOperationActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonCaisseActionPerformed"/>
                       </Events>
                     </Component>
-                    <Component class="javax.swing.JButton" name="jButtonConnexion">
+                    <Component class="javax.swing.JButton" name="jButtonOperation">
                       <Properties>
                         <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                           <Color blue="0" green="66" red="cc" type="rgb"/>
@@ -235,7 +235,7 @@
                         <Property name="opaque" type="boolean" value="true"/>
                       </Properties>
                       <Events>
-                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonConnexionActionPerformed"/>
+                        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonOperationActionPerformed"/>
                       </Events>
                     </Component>
                     <Container class="javax.swing.JPanel" name="jPanel2">
