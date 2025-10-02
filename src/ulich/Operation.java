@@ -4,9 +4,17 @@
  */
 package ulich;
 
+import com.mysql.jdbc.Statement;
+import db.DataBaseConnection;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.ResultSet;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -15,6 +23,7 @@ import javax.swing.JPanel;
  * @author HP
  */
 public class Operation extends javax.swing.JPanel {
+
     private int userId;
 
     /**
@@ -22,10 +31,10 @@ public class Operation extends javax.swing.JPanel {
      */
     public Operation(int userId) {
         initComponents();
-        
+
+        remplirDatesOperation();
+
         this.userId = userId;
-        
-                
 
         this.setLayout(new BorderLayout());
 
@@ -54,11 +63,11 @@ public class Operation extends javax.swing.JPanel {
         jLabelMotif = new javax.swing.JLabel();
         jTextFieldMontant = new javax.swing.JTextField();
         jComboBoxType = new javax.swing.JComboBox<>();
-        jTextFieldDate = new javax.swing.JTextField();
         jButtonValider = new javax.swing.JButton();
         jComboBoxType1 = new javax.swing.JComboBox<>();
         jLabelJustificatif = new javax.swing.JLabel();
         jTextFieldJustification = new javax.swing.JTextField();
+        jComboBoxDate = new javax.swing.JComboBox<>();
 
         setPreferredSize(new java.awt.Dimension(528, 484));
 
@@ -99,9 +108,6 @@ public class Operation extends javax.swing.JPanel {
         jComboBoxType.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jComboBoxType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Entrée", "Sortie", " " }));
 
-        jTextFieldDate.setBackground(new java.awt.Color(251, 252, 210));
-        jTextFieldDate.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-
         jButtonValider.setBackground(new java.awt.Color(251, 252, 210));
         jButtonValider.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jButtonValider.setForeground(new java.awt.Color(153, 51, 0));
@@ -115,7 +121,7 @@ public class Operation extends javax.swing.JPanel {
 
         jComboBoxType1.setBackground(new java.awt.Color(251, 252, 210));
         jComboBoxType1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jComboBoxType1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Quête", "Dîme", "Payement", "Don aux pauvres", " " }));
+        jComboBoxType1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Quête", "Dime", "Don ", "Achat", " " }));
 
         jLabelJustificatif.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jLabelJustificatif.setText("Justificatif");
@@ -128,31 +134,42 @@ public class Operation extends javax.swing.JPanel {
             }
         });
 
+        jComboBoxDate.setBackground(new java.awt.Color(251, 252, 210));
+        jComboBoxDate.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jComboBoxDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { " " }));
+        jComboBoxDate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxDateActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanelOpeLayout = new javax.swing.GroupLayout(jPanelOpe);
         jPanelOpe.setLayout(jPanelOpeLayout);
         jPanelOpeLayout.setHorizontalGroup(
             jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonValider, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(150, 150, 150))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelOpeLayout.createSequentialGroup()
-                .addGap(68, 68, 68)
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelJustificatif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelMontant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelMotif, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(70, 70, 70)
-                .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jTextFieldMontant, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jComboBoxType1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jTextFieldJustification, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelOpeLayout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonValider, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanelOpeLayout.createSequentialGroup()
+                        .addGap(68, 68, 68)
+                        .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jLabelJustificatif, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelMontant, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelMotif, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelDate, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabelType, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(70, 70, 70)
+                        .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jComboBoxType, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldMontant, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jComboBoxType1, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jTextFieldJustification, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jComboBoxDate, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(68, 68, 68))
         );
         jPanelOpeLayout.setVerticalGroup(
@@ -169,7 +186,7 @@ public class Operation extends javax.swing.JPanel {
                 .addGap(30, 30, 30)
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelDate, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextFieldDate, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jComboBoxDate, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(30, 30, 30)
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelMotif, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -178,9 +195,9 @@ public class Operation extends javax.swing.JPanel {
                 .addGroup(jPanelOpeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabelJustificatif, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jTextFieldJustification, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 230, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 111, Short.MAX_VALUE)
                 .addComponent(jButtonValider, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(94, 94, 94))
+                .addGap(96, 96, 96))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -198,7 +215,7 @@ public class Operation extends javax.swing.JPanel {
                 .addComponent(jPanelEnTete, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanelOpe, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12))
+                .addGap(129, 129, 129))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -209,17 +226,23 @@ public class Operation extends javax.swing.JPanel {
     private void jButtonValiderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonValiderActionPerformed
         // TODO add your handling code here:
         enregistrerOperation();
-        
-        
+        viderChamp();
+
+
     }//GEN-LAST:event_jButtonValiderActionPerformed
 
     private void jTextFieldJustificationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldJustificationActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldJustificationActionPerformed
 
+    private void jComboBoxDateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxDateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxDateActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonValider;
+    private javax.swing.JComboBox<String> jComboBoxDate;
     private javax.swing.JComboBox<String> jComboBoxType;
     private javax.swing.JComboBox<String> jComboBoxType1;
     private javax.swing.JLabel jLabelDate;
@@ -230,22 +253,162 @@ public class Operation extends javax.swing.JPanel {
     private javax.swing.JLabel jLabelType;
     private javax.swing.JPanel jPanelEnTete;
     private javax.swing.JPanel jPanelOpe;
-    private javax.swing.JTextField jTextFieldDate;
     private javax.swing.JTextField jTextFieldJustification;
     private javax.swing.JTextField jTextFieldMontant;
     // End of variables declaration//GEN-END:variables
 
     private void enregistrerOperation() {
-        String nom = "Opératon";
-        String montantText = jTextFieldMontant.getSelectedText();
-        double montant;  
-        
+        //on initialise les valeur pour la table operation
+        String nom = "Opération";
+        String montantText = jTextFieldMontant.getText().trim(); // trim pour eviter les espaces
+        String type = (String) jComboBoxType.getSelectedItem();
+        int caisseId = 1;
+        int usersId = this.userId;
+
+        //pour le motif lier a cette operation
+        String titre = (String) jComboBoxType1.getSelectedItem();
+        String justification = jTextFieldJustification.getText();
+        int operationId;
+
+        // 2. Validation du montant
+        double montant;
         try {
             montant = Double.parseDouble(montantText);
-            
-        }catch(NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Le montant est invalide!");
-            
+            if(montant<0){
+                JOptionPane.showMessageDialog(this, "Entrez un nombre positif", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            if (!"Entrée".equals(type)) {
+                montant = montant * -1;
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Format de montant invalide (ex: 100.50)", "Erreur", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // maintenant on vas faire les requetes SQL
+        try ( Connection connection = DataBaseConnection.getConnection()) {
+            // la requete SQL a lancee
+            String insertQuery = "INSERT INTO operation (Nom, Date, DateActuel, Montant, Type, CaisseId, UsersId) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement insertion = connection.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+            // on remplace le donnees de la requete (?) par les valeurs si dessous
+            insertion.setString(1, nom);
+            insertion.setDate(2, java.sql.Date.valueOf(LocalDate.now()));  // Date
+            insertion.setDate(3, java.sql.Date.valueOf(LocalDate.now()));  // DateActuel
+            insertion.setDouble(4, montant);  // Montant est maintenant à l'index 4
+            insertion.setString(5, type);
+            insertion.setInt(6, caisseId);
+            insertion.setInt(7, usersId);
+            // on execute la requete
+            int rowsAffected = insertion.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Récupère l'ID généré
+                ResultSet generatedKeys = insertion.getGeneratedKeys();
+                if (generatedKeys.next()) {
+                    operationId = generatedKeys.getInt(1);  // 1 = première colonne (l'ID)
+                    enregistrerMotif(connection, operationId, titre, justification);
+                    modifierCaisse(connection, caisseId, montant);
+                    JOptionPane.showMessageDialog(this, "Opération enregistrée avec succès! ID: " + operationId, "Succès", JOptionPane.INFORMATION_MESSAGE);
+                    //code pour effacer les champs
+                } else {
+                    JOptionPane.showMessageDialog(this, "Opération enregistrée, mais impossible de récupérer l'ID.", "Avertissement", JOptionPane.WARNING_MESSAGE);
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Aucune ligne insérée.", "Avertissement", JOptionPane.WARNING_MESSAGE);
+            }
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erreur SQL: " + e.getMessage(), "Erreur de base de données", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();  // Pour le débogage (à retirer en production)
         }
     }
+
+    private void remplirDatesOperation() {
+
+        jComboBoxDate.removeAllItems(); // vider le combo si déjà rempli
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate start = LocalDate.now().minusYears(1);
+        LocalDate end = LocalDate.now().plusYears(5);     // 5 ans à venir
+
+        LocalDate date = start;
+        while (!date.isAfter(end)) {
+            jComboBoxDate.addItem(date.format(formatter));
+            date = date.plusDays(1);
+        }
+    }
+
+    private void enregistrerMotif(Connection connection, int operationId, String titre, String justificatif) {
+        try {
+            //la requete
+            String MotifQuery = "INSERT INTO motif (Titre, justificatif, OperationId) VALUES (?, ?, ?)";
+            PreparedStatement motifInsertion = connection.prepareStatement(MotifQuery);
+            motifInsertion.setString(1, titre);
+            motifInsertion.setString(2, justificatif);
+            motifInsertion.setInt(3, operationId);
+
+            // on verifie
+            int rowsAffected = motifInsertion.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Motif ok");
+            } else {
+                JOptionPane.showMessageDialog(this, "Probleme avec les motifs", "Avertissement", JOptionPane.WARNING_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Erreur SQL: " + e.getMessage(), "Erreur de base de données", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();  // Pour le débogage (à retirer en production)
+        }
+    }
+
+    private void modifierCaisse(Connection connection, int caisseId, double montant) throws SQLException {
+        try {
+            connection.setAutoCommit(false);
+
+            // 1. Récupérer solde actuel avec verrou
+            double soldeInitial = 0;
+            String sqlSelect = "SELECT soldeTotal FROM caisse WHERE id = ? FOR UPDATE";
+            try ( PreparedStatement ps = connection.prepareStatement(sqlSelect)) {
+                ps.setInt(1, caisseId);
+                try ( ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        soldeInitial = rs.getDouble("soldeTotal");
+                    } else {
+                        throw new SQLException("Caisse introuvable !");
+                    }
+                }
+            }
+
+            // 2. Calculer le nouveau solde
+            double nouveauSolde = soldeInitial + montant;
+            if (nouveauSolde < 0) {
+                throw new SQLException("Solde insuffisant !");
+            }
+
+            // 3. Mettre à jour la caisse
+            String sqlUpdate = "UPDATE caisse SET soldeTotal = ? WHERE id = ?";
+            try ( PreparedStatement ps = connection.prepareStatement(sqlUpdate)) {
+                ps.setDouble(1, nouveauSolde);
+                ps.setInt(2, caisseId);
+                ps.executeUpdate();
+            }
+
+            connection.commit();
+        } catch (SQLException ex) {
+            connection.rollback();
+            throw ex;
+        } finally {
+            connection.setAutoCommit(true);
+        }
+    }
+
+    private void viderChamp() {
+
+        jTextFieldMontant.setText("");
+        jComboBoxDate.setSelectedIndex(0);
+        jComboBoxType1.setSelectedIndex(0);
+        jComboBoxType.setSelectedIndex(0);
+        jTextFieldJustification.setText("");
+
+    }
+
 }

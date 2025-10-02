@@ -96,7 +96,7 @@ public class MainUli extends javax.swing.JFrame {
         
         
         // Timer de 5 secondes avant de charger la page de connexion
-        Timer timer = new Timer(5000, e -> afficherPageConnexion());
+        Timer timer = new Timer(2000, e -> afficherPageConnexion());
         timer.setRepeats(false);
         timer.start();
 

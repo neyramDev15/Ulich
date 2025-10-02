@@ -11,6 +11,7 @@ import db.DataBaseConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.awt.Window;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -147,14 +149,12 @@ public class JPanelConnection extends javax.swing.JPanel {
         jPanelformulaire.setLayout(jPanelformulaireLayout);
         jPanelformulaireLayout.setHorizontalGroup(
             jPanelformulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelformulaireLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
             .addGroup(jPanelformulaireLayout.createSequentialGroup()
-                .addGap(96, 96, 96)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(165, 165, 165))
             .addGroup(jPanelformulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelformulaireLayout.createSequentialGroup()
                     .addContainerGap()
@@ -174,10 +174,10 @@ public class JPanelConnection extends javax.swing.JPanel {
         jPanelformulaireLayout.setVerticalGroup(
             jPanelformulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelformulaireLayout.createSequentialGroup()
-                .addContainerGap(344, Short.MAX_VALUE)
-                .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButtonConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(385, Short.MAX_VALUE)
+                .addGroup(jPanelformulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonConnection, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAnnuler, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
             .addGroup(jPanelformulaireLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(jPanelformulaireLayout.createSequentialGroup()
@@ -220,7 +220,7 @@ public class JPanelConnection extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanelRenseigner, javax.swing.GroupLayout.DEFAULT_SIZE, 528, Short.MAX_VALUE)
+            .addComponent(jPanelRenseigner, javax.swing.GroupLayout.DEFAULT_SIZE, 568, Short.MAX_VALUE)
             .addComponent(jPanelformulaire, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -229,7 +229,7 @@ public class JPanelConnection extends javax.swing.JPanel {
                 .addComponent(jPanelRenseigner, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanelformulaire, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(61, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -238,11 +238,14 @@ public class JPanelConnection extends javax.swing.JPanel {
     }//GEN-LAST:event_jTextFieldPrenomActionPerformed
 
     private void jButtonConnectionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConnectionActionPerformed
+       
         try {
             connecterUtilisateur();
         } catch (SQLException ex) {
             Logger.getLogger(JPanelConnection.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        redirigerVersApplication();
     }//GEN-LAST:event_jButtonConnectionActionPerformed
 
     private void jButtonAnnulerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnnulerActionPerformed
@@ -303,7 +306,8 @@ public class JPanelConnection extends javax.swing.JPanel {
                 m.setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Nom ou mot de passe incorrect" );
-            }        } catch (SQLException e) {
+            }        
+        } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Erreur de connection");
         }
@@ -315,14 +319,14 @@ public class JPanelConnection extends javax.swing.JPanel {
         return !motDePasse.isEmpty(); // Accepte tout mot de passe non vide pour tester
     }*/
 
-    private void redirigerVersApplication(String fonction) {
+    private void redirigerVersApplication() {
         // Cacher ce panel
         this.setVisible(false);
 
         // Trouver la fenêtre parente et la fermer
-        java.awt.Window parentWindow = javax.swing.SwingUtilities.getWindowAncestor(this);
-        if (parentWindow != null) {
-            parentWindow.dispose();
+        Window parentWindow = SwingUtilities.getWindowAncestor(this);
+            if (parentWindow != null) {
+                parentWindow.dispose();
         }
 
         // Ouvrir la fenêtre principale selon le rôle

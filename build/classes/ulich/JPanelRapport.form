@@ -21,10 +21,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" attributes="0">
-              <Component id="jPanelRapport1" min="-2" pref="618" max="-2" attributes="0"/>
-              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-          </Group>
+          <Component id="jPanelRapport1" min="-2" pref="618" max="-2" attributes="0"/>
           <Component id="jPanelRapport2" alignment="1" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
@@ -236,6 +233,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="G&#xe9;n&#xe9;rer"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonGenererActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButtonImprimer">
           <Properties>

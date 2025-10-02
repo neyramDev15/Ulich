@@ -4,10 +4,22 @@
  */
 package ulich;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+//import com.mysql.jdbc.Connection;
+//import com.mysql.jdbc.PreparedStatement;
+import db.DataBaseConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -19,41 +31,49 @@ public class JPanelCaisse extends javax.swing.JPanel {
      * Creates new form JPanelCaisse
      */
     private double soldeCaisse;
-  
+    private JPanel jPanelAction;
+
     public JPanelCaisse() {
         initComponents();
-        
+
+        //jPanelAction = new JPanel();
         this.setLayout(new BorderLayout());
-        
+
         this.add(jPanelSolde1, BorderLayout.NORTH);
         JPanel panelCentre = new JPanel(new GridBagLayout());
-        panelCentre.setBackground(new Color(251,252,210));
+        panelCentre.setBackground(new Color(251, 252, 210));
         panelCentre.add(jPanelSolde2);
         this.add(panelCentre, BorderLayout.CENTER);
-        
-        updateSoldeLabel();
+
+        afficherSoldeCaisse(1);
     }
-    
-    private void initialiserCaisse() {
-        // Charger le solde initial depuis votre source de données
-        this.soldeCaisse = chargerSoldeInitial();
+
+    private double getSolde(Connection connection, int caisseId) {
+        double soldeTotal = 0.0;
+        String sql = "SELECT soldeTotal FROM caisse WHERE id = ?";
+
+        try ( PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, caisseId);
+
+            try ( ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    soldeTotal = rs.getDouble("soldeTotal");
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return soldeTotal;
     }
-    
-    public void ajouterMontant(double montant){
-        soldeCaisse += montant;
-        updateSoldeLabel();
-    }
-    
-    public void retirerMontant(double montant){
-        soldeCaisse -= montant;
-        updateSoldeLabel();
-    }
-    private void updateSoldeLabel(){
-        jLabelSolde1.setText("Solde : " + soldeCaisse + "FCFA");
-    }
-    
-    public double getSolde(){
-        return soldeCaisse;
+
+    // Méthode pour afficher le solde dans ton JLabel
+    private void afficherSoldeCaisse(int caisseId) {
+        try ( Connection conn = DataBaseConnection.getConnection()) {
+            double soldeTotal = getSolde(conn, caisseId);
+            jLabelSolde1.setText(soldeTotal + " F CFA");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -98,14 +118,25 @@ public class JPanelCaisse extends javax.swing.JPanel {
 
         jComboBoxNom.setBackground(new java.awt.Color(251, 252, 210));
         jComboBoxNom.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
-        jComboBoxNom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Caisse Générale", "Caisse Dîme", "Caisse Quête" }));
+        jComboBoxNom.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Choisir...", "Principale", "Dîme", "Quête" }));
+        jComboBoxNom.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxNomActionPerformed(evt);
+            }
+        });
 
         jButtonFermer.setBackground(new java.awt.Color(251, 252, 210));
         jButtonFermer.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jButtonFermer.setText("Fermer");
         jButtonFermer.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210), new java.awt.Color(251, 252, 210)));
+        jButtonFermer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonFermerActionPerformed(evt);
+            }
+        });
 
-        jLabelSolde1.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
+        jLabelSolde1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabelSolde1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabelSolde1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         javax.swing.GroupLayout jPanelSolde2Layout = new javax.swing.GroupLayout(jPanelSolde2);
@@ -161,6 +192,36 @@ public class JPanelCaisse extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jComboBoxNomActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxNomActionPerformed
+        // TODO add your handling code here:
+        String choix = (String) jComboBoxNom.getSelectedItem();
+        int caisseId = 0;
+
+        if ("Principale".equals(choix)) {
+            caisseId = 1;
+        } else if ("Dîme".equals(choix)) {
+            caisseId = 2;
+        } else if ("Quête".equals(choix)) {
+            caisseId = 3;
+        }
+
+        if (caisseId > 0) {
+            afficherSoldeCaisse(caisseId);
+        }
+        try(Connection connection = DataBaseConnection.getConnection()){
+            getSolde( connection, caisseId);
+        }catch (SQLException e) {
+            e.printStackTrace(); 
+        }
+    }//GEN-LAST:event_jComboBoxNomActionPerformed
+
+    private void jButtonFermerActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFermerActionPerformed
+        // TODO add your handling code here:
+        fermerCaisse();
+
+
+    }//GEN-LAST:event_jButtonFermerActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonFermer;
@@ -172,4 +233,17 @@ public class JPanelCaisse extends javax.swing.JPanel {
     private javax.swing.JPanel jPanelSolde1;
     private javax.swing.JPanel jPanelSolde2;
     // End of variables declaration//GEN-END:variables
+
+    private void fermerCaisse() {
+        JFrame parentFrame = (JFrame) SwingUtilities.getWindowAncestor(this);
+        if (parentFrame != null) {
+            parentFrame.getContentPane().remove(this);
+            parentFrame.getContentPane().add(jPanelAction);
+            parentFrame.revalidate();
+            parentFrame.repaint();
+        } else {
+            System.out.println("Erreur : le panel n'est pas encore attaché à un JFrame !");
+        }
+    }
+
 }

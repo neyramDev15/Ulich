@@ -314,23 +314,5 @@ public class Renseigner extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 
-    /*private Timer afficherPageOperation() {
-        // Vider le panel contenu
-    jPanelAction.removeAll();
-    jPanelAction.setLayout(new BorderLayout());
-
-    // Créer ton panel de connexion
-    JPanelRapport panelOperation = new JPanelRapport();
-
-    // L'ajouter dans le centre
-    jPanelAction.setLayout(new BorderLayout());
-    jPanelAction.add(panelOperation, BorderLayout.CENTER);
-
-    // Rafraîchir
-    jPanelAction.revalidate();
-    jPanelAction.repaint();
-        return null;
-
-    }*/
 }
 

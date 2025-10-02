@@ -4,9 +4,15 @@
  */
 package ulich;
 
+import db.DataBaseConnection;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.GridBagLayout;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -20,12 +26,14 @@ public class JPanelRapport extends javax.swing.JPanel {
      */
     public JPanelRapport() {
         initComponents();
-        
-         this.setLayout(new BorderLayout());
-        
+
+        remplirDates();
+
+        this.setLayout(new BorderLayout());
+
         this.add(jPanelRapport1, BorderLayout.NORTH);
         JPanel panelCentre = new JPanel(new GridBagLayout());
-        panelCentre.setBackground(new Color(251,252,210));
+        panelCentre.setBackground(new Color(251, 252, 210));
         panelCentre.add(jPanelRapport2);
         this.add(panelCentre, BorderLayout.CENTER);
     }
@@ -106,6 +114,11 @@ public class JPanelRapport extends javax.swing.JPanel {
         jButtonGenerer.setBackground(new java.awt.Color(251, 252, 210));
         jButtonGenerer.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
         jButtonGenerer.setText("Générer");
+        jButtonGenerer.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonGenererActionPerformed(evt);
+            }
+        });
 
         jButtonImprimer.setBackground(new java.awt.Color(251, 252, 210));
         jButtonImprimer.setFont(new java.awt.Font("Times New Roman", 0, 20)); // NOI18N
@@ -158,9 +171,7 @@ public class JPanelRapport extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanelRapport1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanelRapport1, javax.swing.GroupLayout.PREFERRED_SIZE, 618, javax.swing.GroupLayout.PREFERRED_SIZE)
             .addComponent(jPanelRapport2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -174,16 +185,34 @@ public class JPanelRapport extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jComboBoxPeriode2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPeriode2ActionPerformed
-        // TODO add your handling code here:
+        // TODO add your handling code here:;
+
     }//GEN-LAST:event_jComboBoxPeriode2ActionPerformed
 
     private void jComboBoxFormatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFormatActionPerformed
         // TODO add your handling code here:
+
+        String choix = jComboBoxFormat.getSelectedItem().toString();
+        if (choix.equals("PDF")) {
+            genererPDF();
+        } else if (choix.equals("EXCEL")) {
+            genererExcel();
+        } else if (choix.equals("WORD")) {
+            genererWord();
+        }
+        
+
     }//GEN-LAST:event_jComboBoxFormatActionPerformed
 
     private void jComboBoxPeriode1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxPeriode1ActionPerformed
         // TODO add your handling code here:
+
     }//GEN-LAST:event_jComboBoxPeriode1ActionPerformed
+
+    private void jButtonGenererActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGenererActionPerformed
+        // TODO add your handling code here:
+        GenererRapport();
+    }//GEN-LAST:event_jButtonGenererActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -199,4 +228,45 @@ public class JPanelRapport extends javax.swing.JPanel {
     private javax.swing.JPanel jPanelRapport1;
     private javax.swing.JPanel jPanelRapport2;
     // End of variables declaration//GEN-END:variables
+
+    private void remplirDates() {
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate start = LocalDate.now().minusYears(1);
+        LocalDate end = LocalDate.now().plusYears(5); 
+
+        jComboBoxPeriode1.removeAllItems(); 
+        jComboBoxPeriode2.removeAllItems();
+
+        LocalDate date = start;
+        while (!date.isAfter(end)) {
+            String dateStr = date.format(formatter);
+            jComboBoxPeriode1.addItem(dateStr);
+            jComboBoxPeriode2.addItem(dateStr);
+            date = date.plusDays(1);
+        }
+    }
+    private void genererPDF() {
+        //JOptionPane.showMessageDialog(this, "Rapport exporté en PDF !");
+    }
+    private void genererExcel() {
+        //JOptionPane.showMessageDialog(this, "Rapport exporté en Excel !");
+    }
+    private void genererWord() {
+        //JOptionPane.showMessageDialog(this, "Rapport exporté en Word !");
+    }
+
+    private void GenererRapport() {
+        try(Connection connection = DataBaseConnection.getConnection()){
+            String Query="SELECT * FROM operation WHERE Date BETWEEN ? AND ?";
+            String dateDebut = (String) jComboBoxPeriode1.getSelectedItem();
+            String dateFin = (String) jComboBoxPeriode2.getSelectedItem();
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+        
+        
+    }
+
+
 }
